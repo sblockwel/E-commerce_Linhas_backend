@@ -10,10 +10,10 @@ public class ProductOrder implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany
+    @ManyToOne
     private Product product;
 
-    @OneToMany
+    @ManyToOne
     private Order order;
 
     private int quantity;
