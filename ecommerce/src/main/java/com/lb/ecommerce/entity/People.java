@@ -17,7 +17,7 @@ public class People implements Serializable {
 
     private String email;
 
-    private String user;
+    private String usernome;
 
     private String password;
 
@@ -59,12 +59,12 @@ public class People implements Serializable {
         this.email = email;
     }
 
-    public String getUser() {
-        return user;
+    public String getUsernome() {
+        return usernome;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setUsernome(String usernome) {
+        this.usernome = usernome;
     }
 
     public String getPassword() {
@@ -98,4 +98,5 @@ public class People implements Serializable {
     public void setType(char type) {
         this.type = type;
     }
+
 }
