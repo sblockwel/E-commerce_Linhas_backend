@@ -7,16 +7,20 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-public class Order implements Serializable {
+public class Orders implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    private People client;
+    private People people;
 
     private Date creationDate;
+
+    private int orderNumber;
+
+    private OrderStatus status; //pega de um Enumerador
 
     public Long getId() {
         return id;
@@ -26,12 +30,12 @@ public class Order implements Serializable {
         this.id = id;
     }
 
-    public People getClient() {
-        return client;
+    public People getPeople() {
+        return people;
     }
 
-    public void setClient(People client) {
-        this.client = client;
+    public void setPeople(People people) {
+        this.people = people;
     }
 
     public Date getCreationDate() {
@@ -57,10 +61,4 @@ public class Order implements Serializable {
     public void setStatus(OrderStatus status) {
         this.status = status;
     }
-
-    private int orderNumber;
-
-    private OrderStatus status; //pega de um Enumerador
-
-
 }

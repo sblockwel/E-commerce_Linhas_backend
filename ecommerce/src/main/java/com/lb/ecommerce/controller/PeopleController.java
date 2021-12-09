@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/client")
+@RequestMapping("/clients")
 @CrossOrigin
 public class PeopleController {
 
@@ -31,8 +31,8 @@ public class PeopleController {
         return ResponseEntity.ok(repository.findAll());
     }
 
-    @DeleteMapping("/{client_id}")
-    public ResponseEntity delete(@PathVariable("client_id") long id) {
+    @DeleteMapping("/{clientsId}")
+    public ResponseEntity delete(@PathVariable("clientsId") long id) {
         repository.deleteById(id);
         return ResponseEntity.ok().build();
     }
