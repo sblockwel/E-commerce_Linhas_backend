@@ -1,6 +1,6 @@
 package com.lb.ecommerce.controller;
 
-import com.lb.ecommerce.entity.Order;
+import com.lb.ecommerce.entity.Orders;
 import com.lb.ecommerce.repository.OrdersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/orders")
 @CrossOrigin
 public class OrdersController {
 
@@ -18,13 +18,13 @@ public class OrdersController {
         private OrdersRepository repository;
 
         @PostMapping
-        public ResponseEntity<Order> save(@RequestBody Order order) {
-            Order pS = repository.save(order);
+        public ResponseEntity<Orders> save(@RequestBody Orders orders) {
+            Orders pS = repository.save(orders);
             return ResponseEntity.ok(pS);
         }
 
         @GetMapping
-        public ResponseEntity<List<Order>> get() {
+        public ResponseEntity<List<Orders>> get() {
             return ResponseEntity.ok(repository.findAll());
         }
 
@@ -33,11 +33,5 @@ public class OrdersController {
             repository.deleteById(id);
             return ResponseEntity.ok().build();
         }
-
-        @GetMapping("/pending")
-        public ResponseEntity<List<Order>> getPending() {
-        return ResponseEntity.ok(repository.getPending());
-    }
-
 
 }
