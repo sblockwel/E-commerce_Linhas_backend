@@ -1,6 +1,8 @@
 package com.lb.ecommerce.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
@@ -16,8 +18,12 @@ public class ProductOrder implements Serializable {
     @ManyToOne
     private Orders orders;
 
+    @NotNull
+    @Min(0)
     private int quantity;
 
+    @NotNull
+    @Min(0)
     private double price;
 
     public Long getId() {
