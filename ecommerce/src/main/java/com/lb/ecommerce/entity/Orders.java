@@ -25,7 +25,8 @@ public class Orders implements Serializable {
 
     //verificar se e 0 a 4
     @NotNull
-    //@Size(min = 0, max = 4)
+    //@min(0)
+    //@max(4)
     private OrderStatus status; //pega de um Enumerador
 
     public Long getId() {

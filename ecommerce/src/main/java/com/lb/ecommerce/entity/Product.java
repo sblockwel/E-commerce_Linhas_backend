@@ -27,7 +27,7 @@ public class Product implements Serializable {
     private String description;
 
     @ManyToOne
-    private Category categoria;
+    private Category category;
 
     public Long getId() {
         return id;
@@ -69,4 +69,11 @@ public class Product implements Serializable {
         this.description = description;
     }
 
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 }
