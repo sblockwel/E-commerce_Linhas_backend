@@ -1,6 +1,9 @@
 package com.lb.ecommerce.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
@@ -10,10 +13,15 @@ public class Product implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty
     private String nome;
 
+    @NotNull
+    @Min(0)
     private Double price;
 
+    @NotNull
+    @Min(0)
     private int quantity;
 
     private String description;

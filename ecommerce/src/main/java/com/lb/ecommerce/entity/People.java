@@ -1,6 +1,7 @@
 package com.lb.ecommerce.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 
 @Entity
@@ -11,18 +12,32 @@ public class People implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty
+    @NotNull
+    @Pattern(regexp="^[a-zA-Z ]*$")
     private String nome;
 
+    @NotNull
+    @Pattern(regexp="^[0-9.-]*$")
+    @Size(min = 14,max = 14)
     private String document; //pode ser CPF ou CNPJ (para empresas)
 
+    @NotNull
     private String email;
 
+    @NotNull
     private String usernome;
 
+    @NotNull
     private String password;
 
+    @NotNull
+    @Pattern(regexp="^[0-9-]*$")
+    @Size(min = 9, max = 9)
     private String ZipCode;
 
+    @NotNull
+    @Min(0)
     private int number;
 
     private char type; // C para cliente e A para o adminstrador
