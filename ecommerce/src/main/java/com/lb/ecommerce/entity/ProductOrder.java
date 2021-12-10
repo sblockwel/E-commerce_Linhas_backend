@@ -16,7 +16,7 @@ public class ProductOrder implements Serializable {
     private Product product;
 
     @ManyToOne
-    private Orders orders;
+    private Order order;
 
     @NotNull
     @Min(0)
@@ -42,12 +42,12 @@ public class ProductOrder implements Serializable {
         this.product = product;
     }
 
-    public Orders getOrder() {
-        return orders;
+    public Order getOrder() {
+        return order;
     }
 
-    public void setOrder(Orders orders) {
-        this.orders = orders;
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     public int getQuantity() {

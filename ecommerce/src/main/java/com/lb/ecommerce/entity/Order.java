@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-public class Orders implements Serializable {
+public class Order implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +21,7 @@ public class Orders implements Serializable {
     private Date creationDate;
 
     //botar um numero aleatorio unico
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long orderNumber;
 
     //verificar se e 0 a 4
