@@ -1,9 +1,10 @@
 package com.lb.ecommerce.entity;
 
 import com.lb.ecommerce.models.OrderStatus;
-import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -20,13 +21,9 @@ public class Orders implements Serializable {
 
     private Date creationDate;
 
-    //botar um numero aleatorio unico
     private Long orderNumber;
 
-    //verificar se e 0 a 4
     @NotNull
-    //@min(0)
-    //@max(4)
     private OrderStatus status; //pega de um Enumerador
 
     public Long getId() {
@@ -57,7 +54,8 @@ public class Orders implements Serializable {
         return orderNumber;
     }
 
-    public void setOrderNumber(Long orderNumber) {
+    public void setOrderNumber(Long orderNumber)
+    {
         this.orderNumber = orderNumber;
     }
 
