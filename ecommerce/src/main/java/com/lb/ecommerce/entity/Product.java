@@ -14,7 +14,7 @@ public class Product implements Serializable {
     private Long id;
 
     @NotEmpty
-    private String nome;
+    private String name;
 
     @NotNull
     @Min(0)
@@ -37,12 +37,12 @@ public class Product implements Serializable {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Double getPrice() {

@@ -15,7 +15,7 @@ public class People implements Serializable {
     @NotEmpty
     @NotNull
     @Pattern(regexp="^[a-zA-Z ]*$")
-    private String nome;
+    private String name;
 
     @NotNull
     @Pattern(regexp="^[0-9.-]*$")
@@ -26,7 +26,7 @@ public class People implements Serializable {
     private String email;
 
     @NotNull
-    private String usernome;
+    private String username;
 
     @NotNull
     private String password;
@@ -50,12 +50,12 @@ public class People implements Serializable {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDocument() {
@@ -74,12 +74,12 @@ public class People implements Serializable {
         this.email = email;
     }
 
-    public String getUsernome() {
-        return usernome;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUsernome(String usernome) {
-        this.usernome = usernome;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {

@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/orders")
-@CrossOrigin
+@CrossOrigin(maxAge = 3600, originPatterns = "*")
 public class OrdersController {
 
 
