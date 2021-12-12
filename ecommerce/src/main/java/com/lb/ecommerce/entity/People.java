@@ -37,6 +37,7 @@ public class People implements Serializable, UserDetails {
 
     private String email;
 
+    @NotNull
     private String password;
 //
 //    private String ZipCode;
@@ -72,11 +73,21 @@ public class People implements Serializable, UserDetails {
             UserRole userRole) {
         this.firstName = firstName;
         this.lastName = lastName;
+    @NotNull
+    @Pattern(regexp="^[0-9-]*$")
+    @Size(min = 9, max = 9)
+    private String ZipCode;
+
+    @NotNull
+    @Min(0)
+    private int number;
+
+    private char type; // C para cliente e A para o adminstrador
         this.email = email;
         this.password = password;
         this.userRole = userRole;
     }
-
+  
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority(userRole.name());
@@ -112,4 +123,5 @@ public class People implements Serializable, UserDetails {
     public boolean isEnabled() {
         return enabled;
     }
+
 }

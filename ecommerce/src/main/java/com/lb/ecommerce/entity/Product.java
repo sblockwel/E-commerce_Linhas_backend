@@ -3,6 +3,9 @@ package com.lb.ecommerce.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
@@ -12,16 +15,21 @@ public class Product implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nome;
+    @NotEmpty
+    private String name;
 
+    @NotNull
+    @Min(0)
     private Double price;
 
+    @NotNull
+    @Min(0)
     private int quantity;
 
     private String description;
 
     @ManyToOne
-    private Category categoria;
+    private Category category;
 
     public Long getId() {
         return id;
@@ -31,12 +39,12 @@ public class Product implements Serializable {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Double getPrice() {
@@ -63,4 +71,11 @@ public class Product implements Serializable {
         this.description = description;
     }
 
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 }

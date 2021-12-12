@@ -1,7 +1,13 @@
 package com.lb.ecommerce.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 public class ProductOrder implements Serializable {
@@ -10,14 +16,19 @@ public class ProductOrder implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private Product product;
+    @NotEmpty
+    @ManyToMany
+    private List<Product> product;
 
     @ManyToOne
-    private Order order;
+    private Orders orders;
 
+    @NotNull
+    @Min(0)
     private int quantity;
 
+    @NotNull
+    @Min(0)
     private double price;
 
     public Long getId() {
@@ -28,20 +39,20 @@ public class ProductOrder implements Serializable {
         this.id = id;
     }
 
-    public Product getProduct() {
+    public List<Product> getProduct() {
         return product;
     }
 
-    public void setProduct(Product product) {
+    public void setProduct(List<Product> product) {
         this.product = product;
     }
 
-    public Order getOrder() {
-        return order;
+    public Orders getOrder() {
+        return orders;
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
+    public void setOrder(Orders orders) {
+        this.orders = orders;
     }
 
     public int getQuantity() {

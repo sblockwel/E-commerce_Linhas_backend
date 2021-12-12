@@ -1,6 +1,9 @@
 package com.lb.ecommerce.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.util.List;
 
@@ -11,6 +14,9 @@ public class Category implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @NotEmpty
+    @NotNull
+    @Pattern(regexp="^[a-zA-Z ]*$")
     private String name;
 
     public int getId() {
