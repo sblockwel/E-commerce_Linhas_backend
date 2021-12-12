@@ -12,7 +12,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/clients")
-@CrossOrigin(maxAge = 3600, origins = "/*")
 public class PeopleController {
 
 
@@ -26,9 +25,14 @@ public class PeopleController {
     }
 
     @GetMapping
-    public ResponseEntity<List<People>> get() {
+    public ResponseEntity<List<People>> get(@RequestParam(required = false) String type) {
+        if (type == null ||type.isEmpty() ){
+            return ResponseEntity.ok(repository.findAll());
+        }
+        else{
+            return ResponseEntity.ok(repository.getByType(type.charAt(0)));
+        }
 
-        return ResponseEntity.ok(repository.findAll());
     }
 
     @DeleteMapping("/{clientsId}")
@@ -36,4 +40,5 @@ public class PeopleController {
         repository.deleteById(id);
         return ResponseEntity.ok().build();
     }
+
 }

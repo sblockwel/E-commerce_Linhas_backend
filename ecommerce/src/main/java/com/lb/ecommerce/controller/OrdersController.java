@@ -1,6 +1,7 @@
 package com.lb.ecommerce.controller;
 
 import com.lb.ecommerce.entity.Orders;
+import com.lb.ecommerce.models.OrderStatus;
 import com.lb.ecommerce.repository.OrdersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -12,7 +13,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/orders")
-@CrossOrigin(maxAge = 3600, originPatterns = "*")
 public class OrdersController {
 
 
@@ -28,8 +28,13 @@ public class OrdersController {
         }
 
         @GetMapping
-        public ResponseEntity<List<Orders>> get() {
-            return ResponseEntity.ok(repository.findAll());
+        public ResponseEntity<List<Orders>> get(@RequestParam(required = false) OrderStatus status) {
+            if (status == null){
+                return ResponseEntity.ok(repository.findAll());
+            }
+            else{
+                return ResponseEntity.ok(repository.getByStatus(status));
+            }
         }
 
         @DeleteMapping("/{ordersId}")

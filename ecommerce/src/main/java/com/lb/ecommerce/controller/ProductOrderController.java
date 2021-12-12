@@ -12,7 +12,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/productorder")
-@CrossOrigin(maxAge = 3600, originPatterns = "*")
 public class ProductOrderController {
 
     @Autowired
