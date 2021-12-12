@@ -1,5 +1,7 @@
 package com.lb.ecommerce.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;

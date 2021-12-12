@@ -1,36 +1,78 @@
 package com.lb.ecommerce.entity;
 
-import javax.persistence.*;
-import javax.validation.constraints.*;
-import java.io.Serializable;
+import com.lb.ecommerce.models.UserRole;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Collections;
+
+@Getter
+@Setter
+@EqualsAndHashCode
+@NoArgsConstructor
 @Entity
-//@Table(name = "clients")
-public class People implements Serializable {
+public class People implements Serializable, UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+//    private String document; // pode ser CPF ou CNPJ (para empresas)
+
     @NotEmpty
     @NotNull
-    @Pattern(regexp="^[a-zA-Z ]*$")
-    private String name;
+    @Pattern(regexp = "^[a-zA-Z ]*$")
+    private String firstName;
 
     @NotNull
-    @Pattern(regexp="^[0-9.-]*$")
-    @Size(min = 14,max = 14)
-    private String document; //pode ser CPF ou CNPJ (para empresas)
+    private String lastName;
 
-    @NotNull
     private String email;
 
     @NotNull
-    private String username;
-
-    @NotNull
     private String password;
+//
+//    private String ZipCode;
+//
+//    private int number;
+//
+//    private char type; // C para cliente e A para o adminstrador
 
+    // @NotNull
+    // @Pattern(regexp="^[0-9-]*$")
+    // @Size(min = 9, max = 9)
+    // private String zipCode;
+    //
+    // @NotNull
+    // @Min(0)
+    // private int number; // phone number
+
+    // @NotNull
+    // @Pattern(regexp="^[0-9.-]*$")
+    // @Size(min = 14,max = 14)
+    // private String document; //pode ser CPF ou CNPJ (para empresas)
+
+    @Enumerated(EnumType.STRING)
+    private UserRole userRole; // C para cliente e A para o adminstrador
+
+    private Boolean locked = true;
+    private Boolean enabled = true;
+
+    public People(String firstName,
+            String lastName,
+            String email,
+            String password,
+            UserRole userRole) {
+        this.firstName = firstName;
+        this.lastName = lastName;
     @NotNull
     @Pattern(regexp="^[0-9-]*$")
     @Size(min = 9, max = 9)
@@ -41,77 +83,45 @@ public class People implements Serializable {
     private int number;
 
     private char type; // C para cliente e A para o adminstrador
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDocument() {
-        return document;
-    }
-
-    public void setDocument(String document) {
-        this.document = document;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
         this.email = email;
+        this.password = password;
+        this.userRole = userRole;
+    }
+  
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(userRole.name());
+        return Collections.singletonList(authority);
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
+    @Override
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    @Override
+    public String getUsername() {
+        return email;
     }
 
-    public String getZipCode() {
-        return ZipCode;
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
     }
 
-    public void setZipCode(String zipCode) {
-        ZipCode = zipCode;
+    @Override
+    public boolean isAccountNonLocked() {
+        return !locked;
     }
 
-    public int getNumber() {
-        return number;
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
-    public char getType() {
-        return type;
-    }
-
-    public void setType(char type) {
-        this.type = type;
+    @Override
+    public boolean isEnabled() {
+        return enabled;
     }
 
 }
