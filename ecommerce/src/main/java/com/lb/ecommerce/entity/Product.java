@@ -1,7 +1,5 @@
 package com.lb.ecommerce.entity;
 
-import lombok.Data;
-
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
@@ -9,6 +7,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
+@Table(name = "products")
 public class Product implements Serializable {
 
     @Id
@@ -29,7 +28,7 @@ public class Product implements Serializable {
     private String description;
 
     @ManyToOne
-    private Category category;
+    private ProductCategory productCategory;
 
     public Long getId() {
         return id;
@@ -71,11 +70,11 @@ public class Product implements Serializable {
         this.description = description;
     }
 
-    public Category getCategory() {
-        return category;
+    public ProductCategory getCategory() {
+        return productCategory;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategory(ProductCategory productCategory) {
+        this.productCategory = productCategory;
     }
 }

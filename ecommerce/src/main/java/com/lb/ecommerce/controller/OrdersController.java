@@ -1,18 +1,16 @@
 package com.lb.ecommerce.controller;
 
-import com.lb.ecommerce.entity.Orders;
+import com.lb.ecommerce.entity.Order;
 import com.lb.ecommerce.models.OrderStatus;
 import com.lb.ecommerce.repository.OrdersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/orders")
+@RequestMapping("/order")
 public class OrdersController {
 
 
@@ -20,15 +18,15 @@ public class OrdersController {
         private OrdersRepository repository;
 
         @PostMapping
-        public ResponseEntity<Orders> save(@RequestBody Orders orders) {
+        public ResponseEntity<Order> save(@RequestBody Order order) {
             Long lastNumber = repository.max();
-            orders.setOrderNumber(lastNumber.longValue());
-            Orders pS = repository.save(orders);
+            order.setOrderNumber(lastNumber.longValue());
+            Order pS = repository.save(order);
             return ResponseEntity.ok(pS);
         }
 
         @GetMapping
-        public ResponseEntity<List<Orders>> get(@RequestParam(required = false) OrderStatus status, @RequestParam(required = false) String user) {
+        public ResponseEntity<List<Order>> get(@RequestParam(required = false) OrderStatus status, @RequestParam(required = false) String user) {
             if (status != null){
                 return ResponseEntity.ok(repository.getByStatus(status));
             }

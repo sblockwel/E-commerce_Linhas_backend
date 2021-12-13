@@ -2,7 +2,7 @@ package com.lb.ecommerce.controller;
 
 import com.lb.ecommerce.data_models.AuthenticationRequest;
 import com.lb.ecommerce.data_models.RegistrationRequest;
-import com.lb.ecommerce.entity.People;
+import com.lb.ecommerce.entity.Person;
 import com.lb.ecommerce.models.UserRole;
 import com.lb.ecommerce.repository.PeopleRepository;
 import com.lb.ecommerce.services.RegistrationService;
@@ -69,15 +69,15 @@ public class AccountController {
                 return ResponseEntity.badRequest().body("Email not exists");
             }
 
-            People people = peopleRepository
+            Person person = peopleRepository
                     .findByEmail(email)
                     .get();
 
-            UserRole oldRole = people.getUserRole();
+            UserRole oldRole = person.getUserRole();
 
-            people.setUserRole(oldRole == UserRole.ADMIN ? UserRole.CLIENT : UserRole.ADMIN);
+            person.setUserRole(oldRole == UserRole.ADMIN ? UserRole.CLIENT : UserRole.ADMIN);
 
-            peopleRepository.save(people);
+            peopleRepository.save(person);
 
             return ResponseEntity.ok("");
         }

@@ -1,6 +1,6 @@
 package com.lb.ecommerce.utils;
 
-import com.lb.ecommerce.entity.People;
+import com.lb.ecommerce.entity.Person;
 import com.lb.ecommerce.models.UserRole;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -53,13 +53,13 @@ public class JwtTokenUtil implements Serializable {
     }
 
     //gera token para user
-    public String generateToken(People people) {
+    public String generateToken(Person person) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", "user");
-        if (people.getUserRole() == UserRole.ADMIN) {
+        if (person.getUserRole() == UserRole.ADMIN) {
             claims.put("role", "admin");
         }
-        return doGenerateToken(claims, people.getEmail());
+        return doGenerateToken(claims, person.getEmail());
     }
 
     //Cria o token e devine tempo de expiração pra ele
@@ -77,8 +77,8 @@ public class JwtTokenUtil implements Serializable {
     }
 
     //valida o token
-    public Boolean validateToken(String token, People people) {
+    public Boolean validateToken(String token, Person person) {
         final String username = getUsernameFromToken(token);
-        return (username.equals(people.getUsername()) && !isTokenExpired(token));
+        return (username.equals(person.getUsername()) && !isTokenExpired(token));
     }
 }

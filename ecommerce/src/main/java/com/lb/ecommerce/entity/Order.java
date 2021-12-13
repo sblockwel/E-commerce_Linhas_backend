@@ -1,7 +1,6 @@
 package com.lb.ecommerce.entity;
 
 import com.lb.ecommerce.models.OrderStatus;
-import org.hibernate.annotations.*;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -10,14 +9,15 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-public class Orders implements Serializable {
+@Table(name = "orders")
+public class Order implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    private People people;
+    private Person person;
 
     private Date creationDate;
 
@@ -34,12 +34,12 @@ public class Orders implements Serializable {
         this.id = id;
     }
 
-    public People getPeople() {
-        return people;
+    public Person getPeople() {
+        return person;
     }
 
-    public void setPeople(People people) {
-        this.people = people;
+    public void setPeople(Person person) {
+        this.person = person;
     }
 
     public Date getCreationDate() {

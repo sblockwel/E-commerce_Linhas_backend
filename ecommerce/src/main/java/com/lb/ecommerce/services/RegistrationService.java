@@ -1,10 +1,11 @@
 package com.lb.ecommerce.services;
 
 import com.lb.ecommerce.data_models.RegistrationRequest;
-import com.lb.ecommerce.entity.People;
-import com.lb.ecommerce.models.UserRole;
+import com.lb.ecommerce.entity.Person;
 import com.lb.ecommerce.validators.EmailValidator;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.config.Configuration;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,6 +16,10 @@ public class RegistrationService {
     private final EmailValidator emailValidator;
 
     public String register(RegistrationRequest request) {
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration()
+                .setFieldMatchingEnabled(true)
+                .setFieldAccessLevel(Configuration.AccessLevel.PRIVATE);
         boolean isValidEmail = emailValidator.
                 test(request.getEmail());
 
@@ -23,14 +28,7 @@ public class RegistrationService {
         }
 
         String token = peopleService.signUpUser(
-                new People(
-                        request.getFirstName(),
-                        request.getLastName(),
-                        request.getEmail(),
-                        request.getPassword(),
-                        UserRole.CLIENT
-
-                )
+                modelMapper.map(request, Person.class)
         );
 
         return token;

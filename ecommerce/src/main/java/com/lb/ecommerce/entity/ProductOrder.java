@@ -1,6 +1,5 @@
 package com.lb.ecommerce.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -8,10 +7,10 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.List;
 
 @Entity
 @Data
+@Table(name = "product_orders")
 public class ProductOrder implements Serializable {
 
     @Id
@@ -22,7 +21,7 @@ public class ProductOrder implements Serializable {
     private Product product;
 
     @ManyToOne
-    private Orders orders;
+    private Order order;
 
     @NotNull
     @Min(0)

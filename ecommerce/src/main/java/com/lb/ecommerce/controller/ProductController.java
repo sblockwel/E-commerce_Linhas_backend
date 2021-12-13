@@ -1,5 +1,6 @@
 package com.lb.ecommerce.controller;
 
+import com.lb.ecommerce.entity.ProductCategory;
 import com.lb.ecommerce.entity.Product;
 import com.lb.ecommerce.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;

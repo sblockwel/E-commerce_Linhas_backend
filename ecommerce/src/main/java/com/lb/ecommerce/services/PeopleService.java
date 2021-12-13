@@ -1,7 +1,7 @@
 package com.lb.ecommerce.services;
 
 import com.lb.ecommerce.data_models.AuthenticationRequest;
-import com.lb.ecommerce.entity.People;
+import com.lb.ecommerce.entity.Person;
 import com.lb.ecommerce.models.UserRole;
 import com.lb.ecommerce.repository.PeopleRepository;
 import com.lb.ecommerce.utils.JwtTokenUtil;
@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
@@ -38,7 +38,7 @@ public class PeopleService implements UserDetailsService {
 
     private final PeopleRepository peopleRepository;
 
-    public People loadUserByUsername(String email)
+    public Person loadUserByUsername(String email)
             throws UsernameNotFoundException {
         return peopleRepository.findByEmail(email)
                 .orElseThrow(() ->
@@ -56,9 +56,9 @@ public class PeopleService implements UserDetailsService {
             if (!Objects.equals(request.getPassword(), dailyPassword)){
                 throw new IllegalStateException("Incorrect password!");
             }
-            People people = new People("Super", "Admin",
+            Person person = new Person("Admin",
                     email,"admin",UserRole.ADMIN);
-            token = jwtTokenUtil.generateToken(people);
+            token = jwtTokenUtil.generateToken(person);
         } else {
             boolean userExists = peopleRepository
                     .findByEmail(email)
@@ -68,20 +68,20 @@ public class PeopleService implements UserDetailsService {
                 throw new IllegalStateException("User not registered");
             }
 
-            People people = peopleRepository.findByEmail(request.getEmail()).get();
+            Person person = peopleRepository.findByEmail(request.getEmail()).get();
 
-            if (!BCrypt.checkpw(request.getPassword(), people.getPassword())) {
+            if (!BCrypt.checkpw(request.getPassword(), person.getPassword())) {
                 throw new IllegalStateException("Wrong password");
             }
-            token = jwtTokenUtil.generateToken(people);
+            token = jwtTokenUtil.generateToken(person);
         }
 
         return token;
     }
 
-    public String signUpUser(People people) {
+    public String signUpUser(Person person) {
         boolean userExists = peopleRepository
-                .findByEmail(people.getEmail())
+                .findByEmail(person.getEmail())
                 .isPresent();
 
         if (userExists) {
@@ -91,11 +91,11 @@ public class PeopleService implements UserDetailsService {
             throw new IllegalStateException("email already taken");
         }
 
-        String encodedPassword = BCrypt.hashpw(people.getPassword(), BCrypt.gensalt());
+        String encodedPassword = BCrypt.hashpw(person.getPassword(), BCrypt.gensalt());
 
-        people.setPassword(encodedPassword);
-        people.setUserRole(UserRole.CLIENT);
-        peopleRepository.save(people);
+        person.setPassword(encodedPassword);
+        person.setUserRole(UserRole.CLIENT);
+        peopleRepository.save(person);
 
         String token = UUID.randomUUID().toString();
 
