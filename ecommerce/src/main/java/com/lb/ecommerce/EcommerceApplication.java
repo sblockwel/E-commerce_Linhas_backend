@@ -18,7 +18,9 @@ public class EcommerceApplication {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry){
-				registry.addMapping("/**").allowedOrigins("http://localhost:8081");
+				registry.addMapping("/**")
+						.allowCredentials(true)
+						.allowedOrigins("http://localhost:8081", "https://e-commerce-front.herokuapp.com");
 			}
 
 		};
