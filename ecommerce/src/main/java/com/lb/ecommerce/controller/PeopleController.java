@@ -2,7 +2,9 @@ package com.lb.ecommerce.controller;
 
 import com.lb.ecommerce.data_models.PeopleResponse;
 import com.lb.ecommerce.entity.Person;
+import com.lb.ecommerce.models.UserRole;
 import com.lb.ecommerce.repository.PeopleRepository;
+import com.lb.ecommerce.utils.MapperUtils;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.modelmapper.config.Configuration;
@@ -11,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
-
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -21,16 +23,6 @@ public class PeopleController {
     @Autowired
     private PeopleRepository repository;
 
-    private ModelMapper modelMapper;
-
-    public PeopleController() {
-        this.modelMapper = new ModelMapper();
-        this.modelMapper.getConfiguration()
-            .setFieldMatchingEnabled(true)
-            .setFieldAccessLevel(Configuration.AccessLevel.PRIVATE);
-    }
-
-
     @PostMapping
     public ResponseEntity<Person> save(@RequestBody Person person) {
         Person pS = repository.save(person);
@@ -39,14 +31,16 @@ public class PeopleController {
 
     @GetMapping
     public ResponseEntity<List<PeopleResponse>> get(@RequestParam(required = false) String type) {
-        List<Person> people = repository.findAll();
-        if (type == null ||type.isEmpty() ){
-            return ResponseEntity.ok(modelMapper.map(people, new TypeToken<List<PeopleResponse>>(){}.getType()));
+        List<PeopleResponse> responseList = new ArrayList<>();
+        if (type == null || type.isEmpty() ){
+            List<Person> people = repository.findAll();
+            responseList = MapperUtils.mapList(people, PeopleResponse.class);
         }
-//        else{
-//            return ResponseEntity.ok(repository.getByType(type.charAt(0)));
-//        }
-        return ResponseEntity.ok(modelMapper.map(people, new TypeToken<List<PeopleResponse>>(){}.getType()));
+        else{
+            List<Person> people = repository.getAllByRole(type.equalsIgnoreCase("A") ? UserRole.ADMIN : UserRole.CLIENT);
+            responseList = MapperUtils.mapList(people, PeopleResponse.class);
+        }
+        return ResponseEntity.ok(responseList);
     }
 
     @DeleteMapping("/{clientsId}")

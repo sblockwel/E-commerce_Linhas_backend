@@ -1,13 +1,11 @@
 package com.lb.ecommerce.controller;
 
 import com.lb.ecommerce.data_models.ProductRequest;
-import com.lb.ecommerce.entity.ProductCategory;
 import com.lb.ecommerce.entity.Product;
+import com.lb.ecommerce.entity.ProductCategory;
 import com.lb.ecommerce.repository.ProductCategoryRepository;
 import com.lb.ecommerce.repository.ProductRepository;
-import jdk.jfr.Category;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.config.Configuration;
+import com.lb.ecommerce.utils.MapperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,19 +23,9 @@ public class ProductController {
     @Autowired
     private ProductCategoryRepository categoryRepository;
 
-
-    private ModelMapper modelMapper;
-
-    public ProductController() {
-        this.modelMapper = new ModelMapper();
-        this.modelMapper.getConfiguration()
-                .setFieldMatchingEnabled(true)
-                .setFieldAccessLevel(Configuration.AccessLevel.PRIVATE);
-    }
-
     @PostMapping
     public ResponseEntity save(@RequestBody ProductRequest productRequest) {
-        Product product = modelMapper.map(productRequest, Product.class);
+        Product product = MapperUtils.map(productRequest, Product.class);
         if (!categoryRepository.existsById((long) productRequest.getCategoryId())) {
             return ResponseEntity.badRequest().body("Essa categoria não existe ou está vazia!");
         }
