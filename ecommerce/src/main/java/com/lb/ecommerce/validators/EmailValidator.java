@@ -1,4 +1,4 @@
-package com.lb.ecommerce.Registration;
+package com.lb.ecommerce.validators;
 
 import org.springframework.stereotype.Service;
 

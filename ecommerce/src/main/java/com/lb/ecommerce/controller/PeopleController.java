@@ -29,10 +29,10 @@ public class PeopleController {
         if (type == null ||type.isEmpty() ){
             return ResponseEntity.ok(repository.findAll());
         }
-        else{
-            return ResponseEntity.ok(repository.getByType(type.charAt(0)));
-        }
-
+//        else{
+//            return ResponseEntity.ok(repository.getByType(type.charAt(0)));
+//        }
+        return ResponseEntity.ok(repository.findAll());
     }
 
     @DeleteMapping("/{clientsId}")

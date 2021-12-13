@@ -1,19 +1,20 @@
-package com.lb.ecommerce.Security;
+package com.lb.ecommerce.utils;
 
 import com.lb.ecommerce.entity.People;
 import com.lb.ecommerce.models.UserRole;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
-import java.util.function.Function;
 import java.util.HashMap;
 import java.util.Map;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import java.util.function.Function;
 
 @Data
 @Component
@@ -55,17 +56,23 @@ public class JwtTokenUtil implements Serializable {
     public String generateToken(People people) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", "user");
-        if(people.getUserRole() == UserRole.ADMIN ){
+        if (people.getUserRole() == UserRole.ADMIN) {
             claims.put("role", "admin");
         }
-        return doGenerateToken(claims, people.getUsername());
+        return doGenerateToken(claims, people.getEmail());
     }
 
     //Cria o token e devine tempo de expiração pra ele
-    private String doGenerateToken(Map<String, Object> claims, String subject) {
-        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
+    private String doGenerateToken(Map<String, Object> claims, String username) {
+        byte[] secretKey = secret.getBytes(StandardCharsets.UTF_8);
+        String jwtToken = Jwts.builder()
+                .setSubject(username)
+                .setIssuer("localhost:8080")
+                .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
-                .signWith(SignatureAlgorithm.HS512, secret).compact();
+                .signWith(Keys.hmacShaKeyFor(secretKey))
+                .compact();
+        return jwtToken;
     }
 
     //valida o token

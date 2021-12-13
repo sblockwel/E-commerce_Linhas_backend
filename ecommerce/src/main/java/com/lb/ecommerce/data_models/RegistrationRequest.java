@@ -1,6 +1,8 @@
-package com.lb.ecommerce.Registration;
+package com.lb.ecommerce.data_models;
 
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Data
 @EqualsAndHashCode

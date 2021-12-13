@@ -7,9 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
@@ -73,21 +71,18 @@ public class People implements Serializable, UserDetails {
             UserRole userRole) {
         this.firstName = firstName;
         this.lastName = lastName;
-    @NotNull
-    @Pattern(regexp="^[0-9-]*$")
-    @Size(min = 9, max = 9)
-    private String ZipCode;
-
-    @NotNull
-    @Min(0)
-    private int number;
-
-    private char type; // C para cliente e A para o adminstrador
         this.email = email;
         this.password = password;
         this.userRole = userRole;
     }
-  
+    @Null
+    @Pattern(regexp="^[0-9-]*$")
+    @Size(min = 9, max = 9)
+    private String ZipCode;
+
+    @Min(0)
+    private int number;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority(userRole.name());

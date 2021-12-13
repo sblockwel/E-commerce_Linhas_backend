@@ -1,10 +1,10 @@
-package com.lb.ecommerce.Service;
+package com.lb.ecommerce.services;
 
-import com.lb.ecommerce.Registration.AuthenticationRequest;
-import com.lb.ecommerce.Security.JwtTokenUtil;
-import com.lb.ecommerce.entity.ConfirmationToken;
+import com.lb.ecommerce.data_models.AuthenticationRequest;
 import com.lb.ecommerce.entity.People;
+import com.lb.ecommerce.models.UserRole;
 import com.lb.ecommerce.repository.PeopleRepository;
+import com.lb.ecommerce.utils.JwtTokenUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -12,10 +12,9 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -32,8 +31,6 @@ public class PeopleService implements UserDetailsService {
             "user with email %s not found";
 
     private final PeopleRepository peopleRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final ConfirmationTokenService confirmationTokenService;
 
     public People loadUserByUsername(String email)
             throws UsernameNotFoundException {
@@ -44,9 +41,9 @@ public class PeopleService implements UserDetailsService {
     }
 
     public String signInUser(AuthenticationRequest request) {
-
+        String email = request.getEmail();
         boolean userExists = peopleRepository
-                .findByEmail(request.getEmail())
+                .findByEmail(email)
                 .isPresent();
 
         if (!userExists) {
@@ -56,12 +53,7 @@ public class PeopleService implements UserDetailsService {
 
         People people = peopleRepository.findByEmail(request.getEmail()).get();
 
-        String encodedPassword = bCryptPasswordEncoder
-                .encode(request.getPassword());
-
-        boolean passWordIsCorrect = encodedPassword == people.getPassword();
-
-        if(passWordIsCorrect) {
+        if(!BCrypt.checkpw(request.getPassword(), people.getPassword())) {
             throw new IllegalStateException("Wrong password");
         }
 
@@ -82,25 +74,13 @@ public class PeopleService implements UserDetailsService {
             throw new IllegalStateException("email already taken");
         }
 
-        String encodedPassword = bCryptPasswordEncoder
-                .encode(people.getPassword());
+        String encodedPassword = BCrypt.hashpw(people.getPassword(), BCrypt.gensalt());
 
         people.setPassword(encodedPassword);
-
+        people.setUserRole(UserRole.CLIENT);
         peopleRepository.save(people);
 
         String token = UUID.randomUUID().toString();
-
-        ConfirmationToken confirmationToken = new ConfirmationToken(
-                token,
-                LocalDateTime.now(),
-                LocalDateTime.now().plusMinutes(15),
-                people
-        );
-
-        confirmationTokenService.saveConfirmationToken(
-                confirmationToken);
-
 
         return token;
     }
