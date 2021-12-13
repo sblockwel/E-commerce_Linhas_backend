@@ -2,6 +2,7 @@ package com.lb.ecommerce.entity;
 
 import com.lb.ecommerce.models.UserRole;
 import lombok.*;
+import org.springframework.lang.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,19 +35,17 @@ public class Person implements Serializable, UserDetails {
     @NotNull
     private String password;
 
-     @NotNull
-     @Pattern(regexp="^[0-9-]*$")
-     @Size(min = 10, max = 10)
-     private String zipCode;
+    @Nullable
+    @Size(min = 8, max = 10)
+    private String zipCode;
 
-     @NotNull
-     @Min(0)
-     private int number; // phone number
+    @Nullable
+    private String number; // phone number
 
-     @NotNull
-     @Pattern(regexp="^[0-9.-]*$")
-     @Size(min = 11,max = 14)
-     private String document; //pode ser CPF ou CNPJ (para empresas)
+    @Nullable
+    @Pattern(regexp = "^[0-9.-]*$")
+    @Size(min = 11, max = 14)
+    private String document; //pode ser CPF ou CNPJ (para empresas)
 
     @Enumerated(EnumType.STRING)
     private UserRole userRole; // C para cliente e A para o adminstrador
