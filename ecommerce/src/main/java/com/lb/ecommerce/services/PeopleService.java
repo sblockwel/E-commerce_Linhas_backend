@@ -28,7 +28,7 @@ import java.util.UUID;
 @Data
 @Getter
 @Setter
-public class PeopleService implements UserDetailsService {
+public class PeopleService implements UserDetailsService, IPeopleService {
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;

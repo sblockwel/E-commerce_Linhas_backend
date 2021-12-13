@@ -5,8 +5,8 @@ import com.lb.ecommerce.data_models.RegistrationRequest;
 import com.lb.ecommerce.entity.Person;
 import com.lb.ecommerce.models.UserRole;
 import com.lb.ecommerce.repository.PeopleRepository;
-import com.lb.ecommerce.services.RegistrationService;
-import com.lb.ecommerce.services.PeopleService;
+import com.lb.ecommerce.services.IPeopleService;
+import com.lb.ecommerce.services.IRegistrationService;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.Data;
@@ -22,10 +22,10 @@ import java.util.Base64;
 @RequestMapping("/account")
 public class AccountController {
     @Autowired
-    private final PeopleService peopleService;
+    private final IPeopleService peopleService;
 
     @Autowired
-    private final RegistrationService registrationService;
+    private final IRegistrationService registrationService;
 
     @Autowired
     private final PeopleRepository peopleRepository;

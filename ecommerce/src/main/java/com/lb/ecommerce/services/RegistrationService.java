@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class RegistrationService {
+public class RegistrationService implements IRegistrationService {
 
-    private final PeopleService peopleService;
+    private final IPeopleService peopleService;
     private final EmailValidator emailValidator;
 
     public String register(RegistrationRequest request) {
