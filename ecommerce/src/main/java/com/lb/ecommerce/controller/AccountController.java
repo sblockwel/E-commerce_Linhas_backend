@@ -2,6 +2,9 @@ package com.lb.ecommerce.controller;
 
 import com.lb.ecommerce.data_models.AuthenticationRequest;
 import com.lb.ecommerce.data_models.RegistrationRequest;
+import com.lb.ecommerce.entity.People;
+import com.lb.ecommerce.models.UserRole;
+import com.lb.ecommerce.repository.PeopleRepository;
 import com.lb.ecommerce.services.RegistrationService;
 import com.lb.ecommerce.services.PeopleService;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -24,6 +27,9 @@ public class AccountController {
     @Autowired
     private final RegistrationService registrationService;
 
+    @Autowired
+    private final PeopleRepository peopleRepository;
+
     @PostMapping("register")
     public ResponseEntity<String> register(@RequestBody RegistrationRequest request) {
         try {
@@ -34,7 +40,7 @@ public class AccountController {
 
     }
 
-    @PostMapping(path = "auth")
+    @PostMapping("auth")
     public ResponseEntity<String> auth(@RequestBody AuthenticationRequest request) {
         try {
             String token = peopleService.signInUser(request);
@@ -50,5 +56,33 @@ public class AccountController {
         byte[] rawData = key.getEncoded();
         String encodedKey = Base64.getEncoder().encodeToString(rawData);
         return ResponseEntity.ok(encodedKey);
+    }
+
+    @PostMapping("admin/:email")
+    public ResponseEntity setAdmin(String email) {
+        try{
+            boolean personExists = peopleRepository
+                    .findByEmail(email)
+                    .isPresent();
+
+            if (!personExists){
+                return ResponseEntity.badRequest().body("Email not exists");
+            }
+
+            People people = peopleRepository
+                    .findByEmail(email)
+                    .get();
+
+            UserRole oldRole = people.getUserRole();
+
+            people.setUserRole(oldRole == UserRole.ADMIN ? UserRole.CLIENT : UserRole.ADMIN);
+
+            peopleRepository.save(people);
+
+            return ResponseEntity.ok("");
+        }
+        catch (Exception ex){
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
     }
 }
