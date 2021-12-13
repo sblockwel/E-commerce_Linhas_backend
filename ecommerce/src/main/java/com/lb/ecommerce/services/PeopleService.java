@@ -15,8 +15,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -46,8 +49,10 @@ public class PeopleService implements UserDetailsService {
     public String signInUser(AuthenticationRequest request) {
         String email = request.getEmail();
         String token;
-        if (Objects.equals(email, "admin@admin")) {
-            String dailyPassword = new SimpleDateFormat("ddMMyyyy").format(Instant.now());
+        if (Objects.equals(email, "admin@admin.com")) {
+            Date date = Calendar.getInstance().getTime();
+            DateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
+            String dailyPassword = dateFormat.format(date);
             if (!Objects.equals(request.getPassword(), dailyPassword)){
                 throw new IllegalStateException("Incorrect password!");
             }

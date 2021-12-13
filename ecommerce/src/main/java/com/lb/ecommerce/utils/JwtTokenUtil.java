@@ -67,6 +67,7 @@ public class JwtTokenUtil implements Serializable {
         byte[] secretKey = secret.getBytes(StandardCharsets.UTF_8);
         String jwtToken = Jwts.builder()
                 .setSubject(username)
+                .setClaims(claims)
                 .setIssuer("localhost:8080")
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
