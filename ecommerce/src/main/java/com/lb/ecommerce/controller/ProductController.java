@@ -26,10 +26,10 @@ public class ProductController {
     @PostMapping
     public ResponseEntity save(@RequestBody ProductRequest productRequest) {
         Product product = MapperUtils.map(productRequest, Product.class);
-        if (!categoryRepository.existsById((long) productRequest.getCategoryId())) {
+        if (!categoryRepository.existsById(productRequest.getCategoryId())) {
             return ResponseEntity.badRequest().body("Essa categoria não existe ou está vazia!");
         }
-        ProductCategory productCategory = categoryRepository.getById((long) productRequest.getCategoryId());
+        ProductCategory productCategory = categoryRepository.getById(productRequest.getCategoryId());
         product.setCategory(productCategory);
         product = repository.save(product);
         return ResponseEntity.ok(product);

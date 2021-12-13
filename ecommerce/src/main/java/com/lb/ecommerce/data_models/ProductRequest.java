@@ -8,9 +8,9 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 public class ProductRequest {
-    private final String name;
-    private final String description;
-    private final Double price;
-    private final int quantity;
-    private final int categoryId;
+    private String name;
+    private String description;
+    private Double price;
+    private int quantity;
+    private int categoryId;
 }
