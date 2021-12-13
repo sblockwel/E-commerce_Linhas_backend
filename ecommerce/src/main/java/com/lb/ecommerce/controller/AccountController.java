@@ -58,8 +58,8 @@ public class AccountController {
         return ResponseEntity.ok(encodedKey);
     }
 
-    @PostMapping("admin/:email")
-    public ResponseEntity setAdmin(String email) {
+    @PostMapping("admin/{email}")
+    public ResponseEntity setAdmin(@PathVariable String email) {
         try{
             boolean personExists = peopleRepository
                     .findByEmail(email)

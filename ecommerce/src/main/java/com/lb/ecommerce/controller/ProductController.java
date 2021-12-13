@@ -16,7 +16,6 @@ import java.util.List;
 @RequestMapping("/product")
 public class ProductController {
 
-
     @Autowired
     private ProductRepository repository;
 
