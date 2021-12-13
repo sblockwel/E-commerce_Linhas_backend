@@ -28,12 +28,15 @@ public class OrdersController {
         }
 
         @GetMapping
-        public ResponseEntity<List<Orders>> get(@RequestParam(required = false) OrderStatus status) {
-            if (status == null){
-                return ResponseEntity.ok(repository.findAll());
+        public ResponseEntity<List<Orders>> get(@RequestParam(required = false) OrderStatus status, @RequestParam(required = false) String user) {
+            if (status != null){
+                return ResponseEntity.ok(repository.getByStatus(status));
+            }
+            else if (user != null){
+                return ResponseEntity.ok(repository.getByUser(user));
             }
             else{
-                return ResponseEntity.ok(repository.getByStatus(status));
+                return ResponseEntity.ok(repository.findAll());
             }
         }
 
